@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SABER ES JUGAR</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <!-- Elementos decorativos de fondo -->
+    <div class="bg-decorative">
+        <div class="bg-shape bg-shape-1"></div>
+        <div class="bg-shape bg-shape-2"></div>
+        <div class="bg-shape bg-shape-3"></div>
+        <div class="bg-grid"></div>
+    </div>
+
+    <!-- Contenedor principal -->
+    <main id="app" class="app-container">
+        <!-- Pantalla de Inicio -->
+        <section id="home-screen" class="screen active">
+            <div class="home-content">
+                <div class="logo-container">
+                    <h1 class="main-title">
+                        <span class="title-line line-1">SABER</span>
+                        <span class="title-line line-2">ES JUGAR</span>
+                    </h1>
+                </div>
+                <div class="subtitle-container">
+                    <p class="subtitle">Pon a prueba lo que sabes</p>
+                </div>
+                <div class="decorative-divider"></div>
+                <div class="actions-container">
+                    <button id="btn-play" class="btn btn-primary">
+                        <span class="btn-text">JUGAR</span>
+                        <span class="btn-icon">▶</span>
+                    </button>
+                    <button id="btn-quizzes" class="btn btn-secondary">
+                        <span class="btn-text">VER QUIZZES</span>
+                    </button>
+                </div>
+                <div class="stats-preview">
+                    <div class="stat-item">
+                        <span class="stat-number" id="total-quizzes">07</span>
+                        <span class="stat-label">QUIZZES</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pantalla de Selección de Quizzes -->
+        <section id="quizzes-screen" class="screen">
+            <div class="screen-header">
+                <button id="btn-back-home" class="btn-back">← VOLVER</button>
+                <h2 class="screen-title">ELIGE TU RETO</h2>
+            </div>
+            <div id="quizzes-grid" class="quizzes-grid">
+                <!-- Las tarjetas se generan dinámicamente -->
+            </div>
+        </section>
+
+        <!-- Pantalla de Juego -->
+        <section id="game-screen" class="screen">
+            <div class="game-header">
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="question-counter">
+                        <span id="current-question">1</span> / <span id="total-questions">10</span>
+                    </div>
+                </div>
+                <div class="score-container">
+                    <div class="score-label">PUNTOS</div>
+                    <div class="score-value" id="score-display">0</div>
+                </div>
+            </div>
+            
+            <div class="combo-container" id="combo-container">
+                <div class="combo-badge">
+                    <span class="combo-label">RACHA</span>
+                    <span class="combo-multiplier" id="combo-multiplier">×1</span>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-card" id="question-card">
+                    <div class="question-number" id="question-number">01</div>
+                    <h3 class="question-text" id="question-text"></h3>
+                </div>
+            </div>
+
+            <div class="answers-container" id="answers-container">
+                <!-- Las respuestas se generan dinámicamente -->
+            </div>
+
+            <div class="feedback-container" id="feedback-container">
+                <div class="feedback-content">
+                    <div class="feedback-icon" id="feedback-icon"></div>
+                    <div class="feedback-text" id="feedback-text"></div>
+                    <div class="feedback-explanation" id="feedback-explanation"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pantalla de Resultados -->
+        <section id="results-screen" class="screen">
+            <div class="results-content">
+                <div class="results-header">
+                    <h2 class="results-title">
+                        <span class="results-line">QUIZ</span>
+                        <span class="results-line">COMPLETADO</span>
+                    </h2>
+                </div>
+                
+                <div class="results-stats">
+                    <div class="result-stat main-stat">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-value" id="final-score">0</div>
+                        <div class="stat-label">PUNTOS</div>
+                    </div>
+                    
+                    <div class="result-stat">
+                        <div class="stat-value small" id="correct-count">0/0</div>
+                        <div class="stat-label">CORRECTAS</div>
+                    </div>
+                    
+                    <div class="result-stat">
+                        <div class="stat-value small" id="accuracy-rate">0%</div>
+                        <div class="stat-label">PRECISIÓN</div>
+                    </div>
+                    
+                    <div class="result-stat">
+                        <div class="stat-value small" id="max-combo">×0</div>
+                        <div class="stat-label">MEJOR RACHA</div>
+                    </div>
+                </div>
+
+                <div class="results-actions">
+                    <button id="btn-replay" class="btn btn-primary">
+                        <span class="btn-text">VOLVER A JUGAR</span>
+                        <span class="btn-icon">↻</span>
+                    </button>
+                    <button id="btn-other-quiz" class="btn btn-secondary">
+                        <span class="btn-text">ELEGIR OTRO</span>
+                    </button>
+                </div>
+
+                <div class="highscore-indicator" id="highscore-indicator">
+                    <span class="hs-icon">★</span>
+                    <span class="hs-text">¡NUEVO RÉCORD!</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pantalla de Ajustes -->
+        <section id="settings-screen" class="screen">
+            <div class="screen-header">
+                <button id="btn-back-settings" class="btn-back">← VOLVER</button>
+                <h2 class="screen-title">AJUSTES</h2>
+            </div>
+            
+            <div class="settings-content">
+                <div class="setting-item">
+                    <label class="setting-label">SONIDO</label>
+                    <button id="toggle-sound" class="toggle-btn active">
+                        <span class="toggle-indicator"></span>
+                    </button>
+                </div>
+                
+                <div class="setting-item">
+                    <label class="setting-label">ANIMACIONES</label>
+                    <button id="toggle-animations" class="toggle-btn active">
+                        <span class="toggle-indicator"></span>
+                    </button>
+                </div>
+                
+                <div class="setting-item">
+                    <label class="setting-label">REDUCIR MOVIMIENTO</label>
+                    <button id="toggle-reduced-motion" class="toggle-btn">
+                        <span class="toggle-indicator"></span>
+                    </button>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="setting-item danger">
+                    <label class="setting-label">BORRAR DATOS</label>
+                    <button id="btn-reset-data" class="btn btn-danger">
+                        <span class="btn-text">RESET COMPLETO</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Botón de ajustes flotante -->
+    <button id="btn-settings" class="btn-floating">⚙</button>
+
+    <!-- Contenedor de partículas -->
+    <div id="particles-container" class="particles-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="data/quizzes.js"></script>
+    <script src="js/quiz.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
